@@ -1,0 +1,23 @@
+<div class="image">
+    <img src={{item.image}}>
+</div>
+<div class="content">
+    <a class="header">{{item.name}}</a>
+    <i id="removeBtn" (click)="removeItem()" class="red large times icon right floated"></i>
+    <div class="description">
+        <p>{{item.description}}</p>
+        <span>&#8362;{{item.price}}</span>
+    </div>
+    <mat-form-field appearance="fill" *ngIf="item.limit; else unlimited">
+        <mat-label>Amount</mat-label>
+        <mat-select [value]="amount" (selectionChange)="updateAmount($event.value)">
+            <mat-option *ngFor=" let in of counter(item.limit); index as i" value="{{i+1}}" (select)="updateAmount(i+1)">{{i+1}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <ng-template class="ui selection dropdown" #unlimited>
+        <div class="ui input">
+            <input type="number" value={{amount}}>
+        </div>
+    </ng-template>
+</div>

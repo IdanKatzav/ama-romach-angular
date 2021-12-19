@@ -1,0 +1,15 @@
+#cart-row {
+  display: flex;
+  justify-content: center;
+  padding: 2%;
+}
+#cart-row .card {
+  width: 70%;
+}
+.ui.items {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+#total-price {
+  margin: 2em;
+}

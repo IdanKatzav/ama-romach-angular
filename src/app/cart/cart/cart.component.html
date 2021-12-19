@@ -1,0 +1,29 @@
+<div id="cart-row">
+    <div class="ui card">
+        <div class="content">
+            <div class="header">
+                Your Shopping Cart
+            </div>
+        </div>
+        <div class="content">
+            <div class="ui divided items" *ngFor="let product of productsInCart">
+                <app-item-in-cart (updateItemAmountEvent)="updateItemAmount(product.name, $event)" (removeItemEvent)=removeItemFromCart(product.name) [item]="product" [amount]="itemsInCart[product.name]" class="item">
+                </app-item-in-cart>
+            </div>
+            <div id="total-price ">
+                Total Price: &#8362;{{totalPrice}}
+            </div>
+        </div>
+        <div class="content">
+            <div class="actions">
+                <div id="exit-cart " class="ui black deny button " routerLink="../store">
+                    continue shopping
+                </div>
+                <div class="ui primary right labeled icon button " (click)="checkOut() ">
+                    checkout
+                    <i class="shopping cart icon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

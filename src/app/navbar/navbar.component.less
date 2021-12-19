@@ -1,0 +1,70 @@
+#navbar {
+    display: flex;
+    background-color: #000000;
+    flex-direction: column;
+    margin-bottom: 1%;
+
+    .navbar-row {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: flex-end;
+
+        .navbar-buttons {
+            margin-bottom: 0;
+            color: #FFFFFF;
+            align-self: flex-end;
+            cursor: pointer;
+
+            #items-num {
+                color: #e05d05;
+                font-weight: bolder;
+                font-size: large;
+            }
+
+            &:hover {
+                border-color: #FFFFFF;
+                border-style: solid;
+                border-bottom: none;
+                border-width: 1px;
+                
+                &:after {
+                    border-color: #000000;
+                }
+            }
+        }
+
+        #account-lists {
+            display: flex;
+            align-self: flex-end;
+        }
+        // .popup{
+        //     &:hover{
+        //         visibility: visible;
+        //     }
+        // }
+
+        #cart {
+            display: flex;
+            flex-direction: column;
+            margin-right: 15%;
+            margin-left: 2%;
+        }
+    }
+
+    #search-row {
+        margin: 1%;
+        justify-content: flex-start;
+
+        .input {
+            padding: 1%;
+            width: 50%;
+        }
+
+        #ama-romach-img {
+            margin-top: 1%;
+            height: 4em;
+            cursor: pointer;
+        }
+    }
+}
