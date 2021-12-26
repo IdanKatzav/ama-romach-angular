@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ItemsInCartService } from 'src/app/cart/items-in-cart.service';
+import { Observable, Subject } from 'rxjs';
 import { Product } from '../models/product';
 import { ProductsInStoreService } from '../products-in-store.service';
-import { ItemsInCartService } from 'src/app/cart/items-in-cart.service';
-import { ItemInCart } from 'src/app/cart/models/item-in-cart';
 
 @Component({
     selector: 'app-cards',
@@ -10,28 +10,24 @@ import { ItemInCart } from 'src/app/cart/models/item-in-cart';
     styleUrls: ['./cards.component.less']
 })
 export class CardsComponent implements OnInit {
+    productsInStore$: Observable<Product[]>;
+    onDestroy$: Subject<void>;
 
-    public products: Product[] = [];
-    public itemsInCart: ItemInCart = {};
+    constructor(private itemsInCartService: ItemsInCartService,
+        private productsInStoreService: ProductsInStoreService) {
 
-    constructor(private productsInStoreService: ProductsInStoreService,
-        private itemsInCartService: ItemsInCartService) { }
-
-    ngOnInit(): void {
-        this.getProductsInStore();
-        this.getItemsInCart();
     }
 
-    getProductsInStore() {
-        this.productsInStoreService.getProducts().subscribe((products) => {
-            this.products = products;
-        });
+    ngOnInit() {
+        this.productsInStore$ = this.getProductsInStore();
     }
-    
-    getItemsInCart() {
-        this.itemsInCartService.getItems().subscribe((items) => {
-            this.itemsInCart = items;
-        });
+
+    isProductInCart(itemName: string): boolean {
+        return this.itemsInCartService.isItemInCart(itemName);
+    }
+
+    getProductsInStore(): Observable<Product[]> {
+        return this.productsInStoreService.getProducts();
     }
 
     addToCart(productName: string) {
@@ -40,5 +36,9 @@ export class CardsComponent implements OnInit {
 
     removeFromCart(productName: string) {
         this.itemsInCartService.removeItem(productName);
+    }
+
+    trackByFn(index: number, productInStore: Product) {
+        return productInStore.name;
     }
 }

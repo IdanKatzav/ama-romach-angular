@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Product } from 'src/app/store/models/product';
 import { ItemsInCartService } from '../items-in-cart.service';
 import { ItemInCart } from '../models/item-in-cart';
@@ -9,28 +10,29 @@ import { ItemInCart } from '../models/item-in-cart';
     styleUrls: ['./cart.component.less']
 })
 export class CartComponent implements OnInit {
-    public productsInCart: Product[] = [];
-    public itemsInCart: ItemInCart = {};
-    public totalPrice: number = 0;
+    productsInCart$: Observable<Product[]>;
+    itemsInCart$: Observable<ItemInCart>;
+    totalPrice$: Observable<number>;
 
-    constructor(private itemsInCartService: ItemsInCartService) { }
+    constructor(private itemsInCartService: ItemsInCartService) {
+    }
 
     ngOnInit(): void {
-        this.getItemsInCart();
-        this.getProductsInCart();
-        this.getTotalPrice();
+        this.itemsInCart$ = this.getItemsInCart();
+        this.productsInCart$ = this.getProductsInCart();
+        this.totalPrice$ = this.getTotalPrice();
     }
 
-    getItemsInCart() {
-        this.itemsInCartService.getItems().subscribe((items) => { this.itemsInCart = items });
+    getItemsInCart(): Observable<ItemInCart> {
+        return this.itemsInCartService.getItems();
     }
 
-    getProductsInCart() {
-        this.itemsInCartService.getFullProductsInCart().subscribe((products) => { this.productsInCart = products });
+    getProductsInCart(): Observable<Product[]> {
+        return this.itemsInCartService.getFullProductsInCart();
     }
 
-    getTotalPrice() {
-        this.itemsInCartService.totalPrice().subscribe((totalPrice) => { this.totalPrice = totalPrice })
+    getTotalPrice(): Observable<number> {
+        return this.itemsInCartService.totalPrice();
     }
 
     checkOut() {
@@ -45,7 +47,15 @@ export class CartComponent implements OnInit {
         this.itemsInCartService.removeItem(itemName);
     }
 
-    updateItemAmount(itemName: string, amount: Object) {
-        this.itemsInCartService.updateProductsAmount(itemName, amount as number);
+    updateItemAmount(itemName: string, amount: number) {
+        if (amount > 0) {
+            this.itemsInCartService.updateProductsAmount(itemName, amount);
+        } else {
+            this.removeItemFromCart(itemName);
+        }
+    }
+
+    trackByFn(index: number, product:Product){
+        return product.name;
     }
 }

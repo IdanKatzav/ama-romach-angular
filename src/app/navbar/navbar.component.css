@@ -30,9 +30,10 @@
 #navbar .navbar-row .navbar-buttons:hover:after {
   border-color: #000000;
 }
-#navbar .navbar-row #account-lists {
-  display: flex;
-  align-self: flex-end;
+#navbar .navbar-row #account-list {
+  padding: 4%;
+  width: 15em;
+  height: 6.5em;
 }
 #navbar .navbar-row #cart {
   display: flex;

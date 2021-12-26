@@ -9,11 +9,10 @@ import { ItemInCart } from './models/item-in-cart';
 })
 export class ItemsInCartService {
     private itemsInCart: BehaviorSubject<ItemInCart> = new BehaviorSubject<ItemInCart>({});
-    constructor(private productsInStore: ProductsInStoreService) { }
+    constructor(private productsInStoreService: ProductsInStoreService) { }
 
     addItem(itemName: string) {
         const items = this.itemsInCart.getValue();
-        console.log(items);
         items[itemName] = 1;
         this.itemsInCart.next(items);
     }
@@ -30,8 +29,8 @@ export class ItemsInCartService {
         this.itemsInCart.next(items);
     }
 
-    totalPrice(): Observable<number>{
-        return combineLatest(this.itemsInCart, this.productsInStore.getProducts(), (items, products) => {
+    totalPrice(): Observable<number> {
+        return combineLatest(this.itemsInCart, this.productsInStoreService.getProducts(), (items, products) => {
             let totalPrice: number = 0;
             products.forEach((product) => {
                 totalPrice += product.price * items[product.name] || 0;
@@ -40,27 +39,37 @@ export class ItemsInCartService {
         });
     }
     getFullProductsInCart(): Observable<Product[]> {
-        return combineLatest(this.itemsInCart, this.productsInStore.getProducts(), (items, products) => {
+        return combineLatest(this.itemsInCart, this.productsInStoreService.getProducts(), (items, products) => {
             let productsInCart = products.filter((product) => {
-                return items[product.name] !== undefined ;
+                return !!items[product.name];
             });
             return productsInCart;
         });
     }
 
-    getItems(): BehaviorSubject<ItemInCart>{
-        return this.itemsInCart;
+    getItems(): Observable<ItemInCart> {
+        return this.itemsInCart.asObservable();
     }
 
     isItemInCart(itemName: string): boolean {
-        return this.itemsInCart.getValue()[itemName] !== undefined;
+        return !!this.itemsInCart.getValue()[itemName];
     }
 
-    checkOut(){
+    checkOut() {
         this.itemsInCart.next({});
     }
 
-    getItemAmount(itemName: string): number{
+    getItemAmount(itemName: string): number {
         return this.itemsInCart.getValue()[itemName];
     }
+    
+    getProductsInStore():Observable<Product[]>{
+        return combineLatest(this.productsInStoreService.getProducts(), this.itemsInCart,(products, items)=>{
+            let productsInStore = products.filter((product) => {
+                return !!items[product.name];
+            })
+            return productsInStore;
+        });
+    }
+    
 }

@@ -9,29 +9,31 @@
         </div>
     </div>
     <div class="navbar-row">
-        <div id="account-lists" class="navbar-buttons">
-            <div>Account&Lists<i class="caret down icon"></i></div>
+        <div class="ui floating simple dropdown navbar-buttons">
+            Account&Lists
+            <i class="dropdown icon"></i>
+            <div id="account-list" class="menu">
+                <div class='ui two column divided aligned grid '>
+                    <div class='column'>
+                        <h3 class='ui header'>Your Account</h3>
+                        <div class='ui link list '>
+                            <a class='item'>SIGN IN</a>
+                            <a class='item'>SIGN UP</a>
+                        </div>
+                    </div>
+                    <div class='column'>
+                        <h3 class='ui header'>Your Lists</h3>
+                        <div class='ui link list'>
+                            <a class='item'>create new Lists</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="cart" class="navbar-buttons">
             <label id="items-num">({{numberOfItemsInCart}})</label>
             <div routerLink="/cart"><i class="large shopping cart icon"></i>cart</div>
         </div>
-        <div class="ui flowing popup bottom left transition hidden">
-            <div class="ui two column divided aligned grid ">
-                <div class="column ">
-                    <h3 class="ui header ">Your Account</h3>
-                    <div class="ui link list ">
-                        <a class="item ">SIGN IN</a>
-                        <a class="item ">SIGN UP</a>
-                    </div>
-                </div>
-                <div class="column ">
-                    <h3 class="ui header ">Your Lists</h3>
-                    <div class="ui link list ">
-                        <a class="item ">create new Lists</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 </nav>

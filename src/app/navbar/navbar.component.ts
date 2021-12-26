@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, finalize, Subject, takeUntil } from 'rxjs';
 import { ItemsInCartService } from '../cart/items-in-cart.service';
 
 @Component({
@@ -6,17 +7,26 @@ import { ItemsInCartService } from '../cart/items-in-cart.service';
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.less']
 })
-export class NavbarComponent implements OnInit {
-    public numberOfItemsInCart: number = 0;
-    constructor(private itemsInCartService: ItemsInCartService) { }
-
-    ngOnInit(): void {
+export class NavbarComponent implements OnInit, OnDestroy {
+    numberOfItemsInCart: number;
+    onDestroy$: Subject<void>;
+    
+    constructor(private itemsInCartService: ItemsInCartService) {
+        this.numberOfItemsInCart = 0;
+        this.onDestroy$ = new Subject<void>();
+    }
+    
+    ngOnInit() {
         this.updateNumberOfItemsInCart();
     }
 
-    updateNumberOfItemsInCart(){
-        this.itemsInCartService.getItems().subscribe(items => {
+    updateNumberOfItemsInCart() {
+        this.itemsInCartService.getItems().pipe(takeUntil(this.onDestroy$)).subscribe(items => {
             this.numberOfItemsInCart = Object.keys(items).length;
         });
+    }
+
+    ngOnDestroy() {
+        this.onDestroy$.next();
     }
 }

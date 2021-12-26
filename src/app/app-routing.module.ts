@@ -6,7 +6,8 @@ import { CardsComponent } from './store/cards/cards.component';
 const routes: Routes = [
     { path: 'store', component: CardsComponent },
     { path: 'cart', component: CartComponent},
-    {path: '', redirectTo: '/store', pathMatch: 'full' }
+    {path: '', redirectTo: 'store', pathMatch: 'full' },
+    {path: '**', component: CardsComponent}
 ];
 
 @NgModule({

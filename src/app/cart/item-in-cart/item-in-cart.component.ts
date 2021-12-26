@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import {FormControl} from '@angular/forms';
 
 import { Product } from 'src/app/store/models/product';
 
@@ -14,8 +13,8 @@ export class ItemInCartComponent implements OnInit {
     @Input() amount!: number;
     @Output() removeItemEvent = new EventEmitter<string>();
     @Output() updateItemAmountEvent = new EventEmitter<Object>();
-    
-    constructor() {}
+
+    constructor() { }
 
     ngOnInit(): void {
     }
@@ -24,11 +23,15 @@ export class ItemInCartComponent implements OnInit {
         return new Array(limit);
     }
 
-    removeItem(){
+    removeItem() {
         this.removeItemEvent.emit(this.item.name);
     }
 
-    updateAmount(amount: number){
+    updateAmount(amount: number) {
         this.updateItemAmountEvent.emit(amount);
+    }
+
+    updateInputAmount(event: any) {
+        this.updateAmount(event.target.value as number);
     }
 }
