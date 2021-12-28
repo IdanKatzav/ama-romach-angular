@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Product } from '../models/product';
 
 @Component({
@@ -14,8 +14,7 @@ export class CardComponent implements OnInit {
 
     constructor() { }
 
-    ngOnInit(): void { 
-        console.log('shit')
+    ngOnInit(): void {
     }
 
     addToCart() {

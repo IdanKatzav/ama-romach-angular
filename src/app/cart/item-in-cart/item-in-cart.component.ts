@@ -12,7 +12,7 @@ export class ItemInCartComponent implements OnInit {
     @Input() item!: Product;
     @Input() amount!: number;
     @Output() removeItemEvent = new EventEmitter<string>();
-    @Output() updateItemAmountEvent = new EventEmitter<Object>();
+    @Output() updateItemAmountEvent = new EventEmitter<number>();
 
     constructor() { }
 

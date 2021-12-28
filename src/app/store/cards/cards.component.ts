@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemsInCartService } from 'src/app/cart/items-in-cart.service';
+import { ItemsInCartService } from '../../../../src/app/cart/items-in-cart.service';
 import { Observable, Subject } from 'rxjs';
 import { Product } from '../models/product';
 import { ProductsInStoreService } from '../products-in-store.service';
@@ -15,7 +15,6 @@ export class CardsComponent implements OnInit {
 
     constructor(private itemsInCartService: ItemsInCartService,
         private productsInStoreService: ProductsInStoreService) {
-
     }
 
     ngOnInit() {

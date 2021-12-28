@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { timeout } from 'rxjs';
 import { Product } from '../store/models/product';
 
 import { ItemsInCartService } from './items-in-cart.service';
@@ -17,120 +16,104 @@ describe('ItemsInCartService', () => {
         expect(service).toBeTruthy();
     });
 
-    it('should return empty Items Record', () => {
+    it('should return empty Items Record', (done) => {
         const emptyItemsRecord: ItemInCart = {}
         service.getItems().subscribe((items) => {
             expect(items).toEqual(emptyItemsRecord);
-        })
+            done();
+        });
     });
 
-    it('should add an Item to cart and get it from the observable subscription', () => {
-        const emptyItemsRecord: ItemInCart = {}
+    it('should add an Item to cart and get it from the observable subscription', (done) => {
         const itemToAdd: string = 'idna'
         const itemsAfterAddition: ItemInCart = { [itemToAdd]: 1 }
 
-        let cartItems: ItemInCart = {}
-        service.getItems().subscribe((items) => {
-            cartItems = items;
-        })
-        expect(cartItems).toEqual(emptyItemsRecord);
         service.addItem(itemToAdd);
-        // setTimeout(() => {
-        //     expect(cartItems).toBe(itemsAfterAddition);
-        // }, 500)
-        expect(cartItems).toEqual(itemsAfterAddition);
+
+        service.getItems().subscribe((items) => {
+            expect(items).toEqual(itemsAfterAddition);
+            done();
+        })
     });
 
-    it('should add an Item to cart and remove it from cart', () => {
+    it('should add an Item to cart and remove it from cart', (done) => {
         const emptyItemsRecord: ItemInCart = {}
-        const itemToAdd: string = 'Coconut'
-        const itemsAfterAddition: ItemInCart = { [itemToAdd]: 1 }
+        const itemToAdd: string = 'Coconut';
 
-        let cartItems: ItemInCart = {}
-        service.getItems().subscribe((items) => {
-            cartItems = items;
-        })
-        expect(cartItems).toEqual(emptyItemsRecord);
         service.addItem(itemToAdd);
-        expect(cartItems).toEqual(itemsAfterAddition);
         service.removeItem(itemToAdd);
-        expect(cartItems).toEqual(emptyItemsRecord);
+
+        service.getItems().subscribe((items) => {
+            expect(items).toEqual(emptyItemsRecord);
+            done();
+        });
     });
 
-    it('should update amount of product in cart', () => {
-        const emptyItemsRecord: ItemInCart = {};
+    it('should update amount of product in cart', (done) => {
         const itemName: string = 'Coconut';
         const updateAmount: number = 4;
-        const itemsAfterAddition: ItemInCart = { [itemName]: 1 }
         const itemsAfterUpdateAmount: ItemInCart = { [itemName]: updateAmount }
 
-        let cartItems: ItemInCart = {}
-        service.getItems().subscribe((items) => {
-            cartItems = items;
-        })
-        expect(cartItems).toEqual(emptyItemsRecord);
         service.addItem(itemName);
-        expect(cartItems).toEqual(itemsAfterAddition);
         service.updateProductsAmount(itemName, updateAmount);
-        expect(cartItems).toEqual(itemsAfterUpdateAmount);
+
+        service.getItems().subscribe((items) => {
+            expect(items).toEqual(itemsAfterUpdateAmount);
+            done();
+        });
     });
 
-    it('should calculate total price of empty cart', () => {
+    it('should calculate total price of empty cart', (done) => {
         const emptyCartPrice: number = 0;
 
-        let cartTotalPrice: number;
         service.totalPrice().subscribe((totalPrice) => {
-            cartTotalPrice = totalPrice;
-        })
-        expect(cartTotalPrice).toEqual(emptyCartPrice);
+            expect(totalPrice).toEqual(emptyCartPrice);
+            done();
+        });
     });
 
-    it('should calculate total price of cart with one product with amount different then 1', () => {
-        const emptyCartPrice: number = 0;
+    it('should calculate total price of cart with one product with amount different then 1', (done) => {
         const itemPrice: number = 200;
         const itemName: string = 'WS License';
         const itemAmount: number = 5;
 
-        let cartTotalPrice: number;
-        service.totalPrice().subscribe((totalPrice) => {
-            cartTotalPrice = totalPrice;
-        })
-        expect(cartTotalPrice).toEqual(emptyCartPrice);
         service.addItem(itemName);
-        expect(cartTotalPrice).toEqual(itemPrice);
         service.updateProductsAmount(itemName, itemAmount);
-        expect(cartTotalPrice).toEqual(itemPrice* itemAmount);   
+        service.totalPrice().subscribe((totalPrice) => {
+            expect(totalPrice).toEqual(itemPrice * itemAmount);
+            done();
+        });
+
     });
-    
-    it('should calculate total price of cart with some products with amount different then 1', () => {
-        const emptyCartPrice: number = 0;
+
+    it('should calculate total price of cart with some products with amount different then 1', (done) => {
         const cartPrice: number = 2000;
         const itemName: string = 'WS License';
         const secondItemName: string = 'Coconut';
         const itemAmount: number = 5;
         const secondItemAmount: number = 10;
 
-        let cartTotalPrice: number;
-        service.totalPrice().subscribe((totalPrice) => {
-            cartTotalPrice = totalPrice;
-        })
-        expect(cartTotalPrice).toEqual(emptyCartPrice);
         service.addItem(itemName);
-        service.updateProductsAmount(itemName, itemAmount);
         service.addItem(secondItemName);
+        service.updateProductsAmount(itemName, itemAmount);
         service.updateProductsAmount(secondItemName, secondItemAmount);
-        expect(cartTotalPrice).toEqual(cartPrice);   
+
+        service.totalPrice().subscribe((totalPrice) => {
+            expect(totalPrice).toEqual(cartPrice);
+            done();
+        });
+
     });
-    
-    it('should retuen all the product in empty cart', () => {
+
+    it('should retuen all the product in empty cart', (done) => {
         const emptyProductsArray: Product[] = [];
         service.getFullProductsInCart().subscribe((products) => {
             expect(products).toEqual(emptyProductsArray);
-        })
+            done();
+        });
     });
-    
-    it('should retuen all the product in cart with one item', () => {
-        const emptyProductsArray: Product[] = [];
+
+    it('should retuen all the product in cart with one item', (done) => {
         const productsArrayAfterAddition: Product[] = [{
             "name": "WS License",
             "description": "Rar WS license. No need for military email",
@@ -138,25 +121,21 @@ describe('ItemsInCartService', () => {
             "image": "../../assets/images/ws.png"
         }];
         const itemName: string = 'WS License';
-        let productsInCart: Product[];
-        
-        service.getFullProductsInCart().subscribe((products) => {
-            productsInCart = products;
-        });
-        expect(productsInCart).toEqual(emptyProductsArray);
-        
+
         service.addItem(itemName);
-        expect(productsInCart).toEqual(productsArrayAfterAddition);
+        service.getFullProductsInCart().subscribe((products) => {
+            expect(products).toEqual(productsArrayAfterAddition);
+            done();
+        });
     });
-    
-    it('should retuen all the product in cart with one item', () => {
-        const emptyProductsArray: Product[] = [];
+
+    it('should retuen all the product in cart with one item', (done) => {
         const productsArrayAfterAddition: Product[] = [{
             "name": "WS License",
             "description": "Rar WS license. No need for military email",
             "price": 200.00,
             "image": "../../assets/images/ws.png"
-        },{
+        }, {
             "name": "Coconut",
             "description": "Good coconut to make oil for your bread",
             "price": 100.00,
@@ -165,52 +144,42 @@ describe('ItemsInCartService', () => {
         }];
         const itemName: string = 'WS License';
         const secondItemName: string = 'Coconut';
-        let productsInCart: Product[];
-        
-        service.getFullProductsInCart().subscribe((products) => {
-            productsInCart = products;
-        });  
-        expect(productsInCart).toEqual(emptyProductsArray);
-        
+
+
         service.addItem(itemName);
         service.addItem(secondItemName);
-        expect(productsInCart).toEqual(productsArrayAfterAddition);
+        service.getFullProductsInCart().subscribe((products) => {
+            expect(products).toEqual(productsArrayAfterAddition);
+            done();
+        });
     });
-    
-    it('should execute Checkout to cart with some products with amount different then 1', () => {
+
+    it('should execute Checkout to cart with some products with amount different then 1', (done) => {
         const emptyCartPrice: number = 0;
-        const cartPrice: number = 2000;
         const itemName: string = 'WS License';
         const secondItemName: string = 'Coconut';
         const itemAmount: number = 5;
         const secondItemAmount: number = 10;
-    
-        let cartTotalPrice: number;
-        service.totalPrice().subscribe((totalPrice) => {
-            cartTotalPrice = totalPrice;
-        })
-        expect(cartTotalPrice).toEqual(emptyCartPrice);
-        
+
         service.addItem(itemName);
         service.updateProductsAmount(itemName, itemAmount);
         service.addItem(secondItemName);
         service.updateProductsAmount(secondItemName, secondItemAmount);
-        expect(cartTotalPrice).toEqual(cartPrice);
-        
-        service.checkOut();   
-        expect(cartTotalPrice).toEqual(emptyCartPrice);
-    });
-    it('should execute Checkout to empty cart', () => {
-        const emptyCartPrice: number = 0;
-    
-        let cartTotalPrice: number;
-        service.totalPrice().subscribe((totalPrice) => {
-            cartTotalPrice = totalPrice;
-        })
-        expect(cartTotalPrice).toEqual(emptyCartPrice);
-        
         service.checkOut();
-        expect(cartTotalPrice).toEqual(emptyCartPrice);   
+        service.totalPrice().subscribe((totalPrice) => {
+            expect(totalPrice).toEqual(emptyCartPrice);
+            done();
+        })
     });
-    
+
+    it('should execute Checkout to empty cart', (done) => {
+        const emptyCartPrice: number = 0;
+
+        service.checkOut();
+        service.totalPrice().subscribe((totalPrice) => {
+           expect(totalPrice).toEqual(emptyCartPrice);
+        });
+        done();
+    });
+
 });

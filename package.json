@@ -9,6 +9,7 @@
         "test": "jest",
         "test:coverage": "jest --coverage"
     },
+    "type": "module",
     "private": true,
     "dependencies": {
         "@angular/animations": "~13.0.0",

@@ -39,9 +39,9 @@ export class CartComponent implements OnInit {
         this.itemsInCartService.checkOut();
     }
 
-    getItemAmount(itemName: string): number {
-        return this.itemsInCartService.getItemAmount(itemName);
-    }
+    // getItemAmount(itemName: string): number {
+    //     return this.itemsInCartService.getItemAmount(itemName);
+    // }
 
     removeItemFromCart(itemName: string) {
         this.itemsInCartService.removeItem(itemName);
