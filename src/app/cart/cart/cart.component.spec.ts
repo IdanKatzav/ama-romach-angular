@@ -3,20 +3,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ItemsInCartService } from '../items-in-cart.service';
 import { CartComponent } from './cart.component';
 
+import {verify, mock, instance} from 'ts-mockito';
 
 describe('CartComponent', () => {
     let itemsInCartService: Partial<ItemsInCartService>; 
     let component: CartComponent;
     let fixture: ComponentFixture<CartComponent>;
 
-    itemsInCartService = {
-        updateProductsAmount: jest.fn(),
-        removeItem: jest.fn(),
-        getItems: jest.fn(),
-        getFullProductsInCart: jest.fn(),
-        totalPrice: jest.fn(),
-        checkOut: jest.fn(),
-    };
+    const mockedItemService = mock(ItemsInCartService);
+    
+    itemsInCartService = instance(mockedItemService);
+    console.log(itemsInCartService)
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -38,41 +35,42 @@ describe('CartComponent', () => {
 
     it('should call itemsInCartService.removeItem() with the correct parameters', () => {
         const itemName: string = 'Coconut';
-        component.removeItemFromCart(itemName)
-        expect(itemsInCartService.removeItem).toHaveBeenCalledWith(itemName);
+        component.removeItemFromCart(itemName);
+        verify(mockedItemService.removeItem(itemName)).called();
     });
     
     it('should call itemsInCartService.updateItemAmount() with the correct parameters', () => {
         const itemName: string = 'Coconut';
         const itemAmount: number = 4;
-        component.updateItemAmount(itemName, itemAmount)
-        expect(itemsInCartService.updateProductsAmount).toHaveBeenCalledWith(itemName, itemAmount);
+        component.updateItemAmount(itemName, itemAmount);
+        verify(mockedItemService.updateProductsAmount(itemName, itemAmount)).called();
     });
     
     it('should call itemsInCartService.removeItem() with the correct parameters after not positive update', () => {
         const itemName: string = 'Coconut';
         const itemAmount: number = -1;
-        component.updateItemAmount(itemName, itemAmount)
-        expect(itemsInCartService.removeItem).toHaveBeenCalledWith(itemName);
+        component.updateItemAmount(itemName, itemAmount);
+        verify(mockedItemService.removeItem(itemName)).called();
     });
 
     it('should call itemsInCartService.totalPrice()', () => {
         component.getTotalPrice();
-        expect(itemsInCartService.totalPrice).toHaveBeenCalled();
+        verify(mockedItemService.totalPrice()).called();
     });
     
     it('should call itemsInCartService.checkOut()', () => {
         component.checkOut();
-        expect(itemsInCartService.checkOut).toHaveBeenCalled();
+        verify(mockedItemService.checkOut()).called();
     });
     
     it('should call itemsInCartService.getItems()', () => {
         component.getItemsInCart();
-        expect(itemsInCartService.getItems).toHaveBeenCalled();
+        verify(mockedItemService.getItems()).called();
+    
     });
     
     it('should call itemsInCartService.getItems()', () => {
         component.getProductsInCart();
-        expect(itemsInCartService.getFullProductsInCart).toHaveBeenCalled();
+        verify(mockedItemService.getFullProductsInCart()).called();
     });    
 });
