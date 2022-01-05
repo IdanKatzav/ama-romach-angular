@@ -31,7 +31,7 @@ describe('ItemInCartComponent', () => {
     });
 
     it('should raise removeItemEvent when removeItem() has been called', () => {
-        component.removeItemEvent.emit = jest.fn();
+        jest.spyOn(component.removeItemEvent, 'emit');
         component.removeItem();
         expect(component.removeItemEvent.emit).toHaveBeenCalledWith(component.item.name);
     });
