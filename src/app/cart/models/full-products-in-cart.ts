@@ -1,4 +1,4 @@
-import { Product } from "src/app/store/models/product";
+import { Product } from "src/app/shop/models/product";
 
 export interface FullProductInCart {
     product: Product,

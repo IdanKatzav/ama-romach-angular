@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Product } from 'src/app/store/models/product';
-import { ItemsInCartService } from '../items-in-cart.service';
+import { Store } from "@ngrx/store";
+
+import { Product } from 'src/app/shop/models/product';
 import { ItemInCart } from '../models/item-in-cart';
+import {AppState} from "../../app.state";
+import { selectItems, selectProductsInCart, selectTotalPrice } from "../cart.selectors";
+import { checkOut, removeItem, updateItemAmount } from "../cart.actions";
 
 @Component({
     selector: 'app-cart',
@@ -14,7 +18,7 @@ export class CartComponent implements OnInit {
     itemsInCart$: Observable<ItemInCart>;
     totalPrice$: Observable<number>;
 
-    constructor(private itemsInCartService: ItemsInCartService) {
+    constructor(private store: Store<AppState>) {
     }
 
     ngOnInit(): void {
@@ -24,30 +28,30 @@ export class CartComponent implements OnInit {
     }
 
     getItemsInCart(): Observable<ItemInCart> {
-        return this.itemsInCartService.getItems();
+		return this.store.select(selectItems);
     }
 
     getProductsInCart(): Observable<Product[]> {
-        return this.itemsInCartService.getFullProductsInCart();
+        return this.store.select(selectProductsInCart);
     }
 
     getTotalPrice(): Observable<number> {
-        return this.itemsInCartService.totalPrice();
+        return this.store.select(selectTotalPrice);
     }
 
     checkOut() {
-        this.itemsInCartService.checkOut();
+        this.store.dispatch(checkOut());
     }
 
-    removeItemFromCart(itemName: string) {
-        this.itemsInCartService.removeItem(itemName);
-    }
+removeItemFromCart(itemName: string) {
+	this.store.dispatch(removeItem({itemName}));
+}
 
     updateItemAmount(itemName: string, amount: number) {
         if (amount > 0) {
-            this.itemsInCartService.updateProductsAmount(itemName, amount);
+            this.store.dispatch(updateItemAmount({itemName, amount}));
         } else {
-            this.removeItemFromCart(itemName);
+			this.store.dispatch(removeItem({itemName}));
         }
     }
 

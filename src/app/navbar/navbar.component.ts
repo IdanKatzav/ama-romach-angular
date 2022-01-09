@@ -1,32 +1,22 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
-import { ItemsInCartService } from '../cart/items-in-cart.service';
+import { Component, OnInit } from '@angular/core';
+import {Observable} from 'rxjs';
+import {Store} from "@ngrx/store";
+
+import {AppState} from "../app.state";
+import {selectItemsAmount} from "../cart/cart.selectors";
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.less']
 })
-export class NavbarComponent implements OnInit, OnDestroy {
-    numberOfItemsInCart: number;
-    onDestroy$: Subject<void>;
-    
-    constructor(private itemsInCartService: ItemsInCartService) {
-        this.numberOfItemsInCart = 0;
-        this.onDestroy$ = new Subject<void>();
+export class NavbarComponent implements OnInit {
+    numberOfItemsInCart$: Observable<number>;
+
+    constructor(private store: Store<AppState>) {
     }
-    
+
     ngOnInit() {
-        this.updateNumberOfItemsInCart();
-    }
-
-    updateNumberOfItemsInCart() {
-        this.itemsInCartService.getItems().pipe(takeUntil(this.onDestroy$)).subscribe(items => {
-            this.numberOfItemsInCart = Object.keys(items).length;
-        });
-    }
-
-    ngOnDestroy() {
-        this.onDestroy$.next();
+        this.numberOfItemsInCart$ = this.store.select(selectItemsAmount);
     }
 }
