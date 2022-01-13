@@ -1,0 +1,3 @@
+<div class="ui grid stretched stackable container" *ngIf="productsInStore$ | async as productsInStore">
+    <app-card *ngFor="let product of productsInStore; trackBy: trackByFn" class="four wide column" [product]="product" [isProductInCart]="isProductInCart(product.name) | async" (addProductEvent)="addToCart($event) " (removeProductEvent)="removeFromCart($event) "></app-card>
+</div>
