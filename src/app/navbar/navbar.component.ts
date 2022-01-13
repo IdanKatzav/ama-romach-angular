@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable} from 'rxjs';
-import {Store} from "@ngrx/store";
+import { Observable } from 'rxjs';
+import { Store } from "@ngrx/store";
 
-import {AppState} from "../app.state";
-import {selectItemsAmount} from "../cart/cart.selectors";
+import { AppState } from "../app.state";
+import { selectItemsAmount } from "../cart/cart.selectors";
+import {ItemInCart} from "../cart/models/item-in-cart";
 
 @Component({
     selector: 'app-navbar',

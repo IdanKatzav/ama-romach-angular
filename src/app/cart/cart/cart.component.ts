@@ -43,19 +43,19 @@ export class CartComponent implements OnInit {
         this.store.dispatch(checkOut());
     }
 
-removeItemFromCart(itemName: string) {
-	this.store.dispatch(removeItem({itemName}));
-}
+	removeItemFromCart(itemName: string) {
+		this.store.dispatch(removeItem({itemName}));
+	}
 
-    updateItemAmount(itemName: string, amount: number) {
-        if (amount > 0) {
-            this.store.dispatch(updateItemAmount({itemName, amount}));
-        } else {
+	updateItemAmount(itemName: string, amount: number) {
+		if (amount > 0) {
+			this.store.dispatch(updateItemAmount({itemName, amount}));
+		} else {
 			this.store.dispatch(removeItem({itemName}));
-        }
-    }
+		}
+	}
 
-    trackByFn(index: number, product:Product){
-        return product.name;
-    }
+	trackByFn(index: number, product:Product){
+		return product.name;
+	}
 }

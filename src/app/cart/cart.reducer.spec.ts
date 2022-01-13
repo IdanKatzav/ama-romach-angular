@@ -1,12 +1,11 @@
-import { cartReducer, emptyCart} from "./cart.reducer";
+import { cartReducer} from "./cart.reducer";
 import {Action} from "@ngrx/store";
 
-import {Product} from "../shop/models/product";
-import {Products} from "../shop/products-in-store-mockup";
 import {addItem, checkOut, removeItem, updateItemAmount} from "./cart.actions";
 import {ItemInCart} from "./models/item-in-cart";
 
 describe('CartReducer', ()  => {
+	const emptyCart = {};
 	it('should return the default state after given unknown action', () => {
 		const action: Action = {
 			type: 'Unknown',
