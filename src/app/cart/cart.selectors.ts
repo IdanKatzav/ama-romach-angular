@@ -1,8 +1,8 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
+import {createFeatureSelector, createSelector} from '@ngrx/store';
 
-import { selectProducts } from '../shop/shop.selectors';
-import { Product } from '../shop/models/product';
-import { ItemInCart } from './models/item-in-cart';
+import {selectProducts} from '../shop/shop.selectors';
+import {Product} from '../shop/models/product';
+import {ItemInCart} from './models/item-in-cart';
 
 export const selectItems = createFeatureSelector<ItemInCart>('cart');
 
@@ -17,8 +17,7 @@ export const selectProductsInCart = createSelector(
     selectItems,
     selectProducts,
     (items: ItemInCart, products: Product[]): Product[] => {
-        let productsInCart = products.filter(product => !!items[product.name])
-        return productsInCart;
+		return products.filter(product => !!items[product.name]);
     }
 );
 

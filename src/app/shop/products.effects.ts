@@ -14,7 +14,7 @@ export class ProductsEffects {
           mergeMap(() =>
             this.productsService.getProducts().pipe(
 				map((products) => loadProductsSucceed({products})),
-				catchError((err) => of(loadProductsError()))
+				catchError(() => of(loadProductsError()))
           ),
         ))
     );
