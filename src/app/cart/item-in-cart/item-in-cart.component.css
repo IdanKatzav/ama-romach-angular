@@ -1,0 +1,7 @@
+.description {
+  display: flex;
+  flex-direction: column;
+}
+#removeBtn {
+  cursor: pointer;
+}
