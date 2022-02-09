@@ -21,7 +21,7 @@ export class CardsComponent implements OnInit {
 
     ngOnInit() {
         this.productsInStore$ = this.store.select(selectProducts);
-    }
+	}
 
     isProductInCart(itemName: string): Observable<boolean> {
         return this.store.select(isProductInCart(itemName));
