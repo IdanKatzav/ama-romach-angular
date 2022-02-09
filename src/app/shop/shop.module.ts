@@ -17,4 +17,4 @@ import { CardComponent } from './card/card.component';
     CardsComponent
   ]
 })
-export class StoreModule { }
+export class ShopModule { }

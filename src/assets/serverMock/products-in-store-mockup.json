@@ -1,6 +1,4 @@
-import { Product } from './models/product';
-
-export const Products: Product[] = [{
+[{
     "name": "Oatmeal",
     "description": "Hot and fluffy oatmeal & protein powder cake",
     "price": 330.00,
@@ -33,4 +31,4 @@ export const Products: Product[] = [{
     "description": "Digital javascript book to start coding your first js website",
     "price": 330.0,
     "image": "../assets/images/js-book.png"
-}];
+}]
