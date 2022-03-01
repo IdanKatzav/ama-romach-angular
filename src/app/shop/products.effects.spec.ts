@@ -29,7 +29,7 @@ describe('ShopEffects', () => {
 	})
 
 	it('should return ProductLoadError action', () => {
-		when(productsServiceMock.getProducts()).thenReturn(throwError(() =>  new Error));
+		when(productsServiceMock.getProducts$()).thenReturn(throwError(() =>  new Error));
 		actions$ = hot('a', {a: { type: ROOT_EFFECTS_INIT }});
 
 		const expected = hot('a', { a: loadProductsError() });
@@ -44,7 +44,7 @@ describe('ShopEffects', () => {
 			price: 100
 	 	}];
 
-		when(productsServiceMock.getProducts()).thenReturn(of(products));
+		when(productsServiceMock.getProducts$()).thenReturn(of(products));
 		actions$ = hot('a', {a: {type: ROOT_EFFECTS_INIT}});
 
 		const expected = hot('b', { b: loadProductsSucceed({products}) });

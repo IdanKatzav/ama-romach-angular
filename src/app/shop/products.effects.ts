@@ -12,7 +12,7 @@ export class ProductsEffects {
       this.actions$.pipe(
         ofType(ROOT_EFFECTS_INIT),
           mergeMap(() =>
-            this.productsService.getProducts().pipe(
+            this.productsService.getProducts$().pipe(
 				map((products) => loadProductsSucceed({products})),
 				catchError(() => of(loadProductsError()))
           ),
