@@ -25,6 +25,7 @@
         "@ngrx/core": "^1.2.0",
         "@ngrx/effects": "^13.0.2",
         "@ngrx/store": "^13.0.2",
+        "apollo-angular": "^3.0.0",
         "fomantic-ui": "^2.8.8",
         "lodash": "^4.17.21",
         "rxjs": "~7.4.0",
